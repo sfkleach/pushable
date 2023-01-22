@@ -11,8 +11,8 @@ class Pushable:
     on a stream of tokens. 
     """
 
-    def __init__(self, iter:Iterator[Any]):
-        self.source: Iterator[Any] = iter
+    def __init__(self, source):
+        self.source: Iterator[Any] = iter(source)
         self.stored = deque()
 
     def __iter__(self):
