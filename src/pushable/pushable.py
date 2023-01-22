@@ -12,8 +12,8 @@ class Pushable:
     """
 
     def __init__(self, source):
-        self.source: Iterator[Any] = iter(source)
-        self.stored = deque()
+        self._source: Iterator[Any] = iter(source)
+        self._stored = deque()
 
     def __iter__(self):
         """Returns itself, like any other iterator"""
@@ -24,10 +24,10 @@ class Pushable:
         Use this to test if the iterator is exhaused. Returns True if another 
         item is available, otherwise False.
         """
-        if self.stored:
+        if self._stored:
             return True
         try:
-            self.stored.append(next(self.source))
+            self._stored.append(next(self._source))
         except StopIteration:
             return False
         return True
@@ -36,27 +36,32 @@ class Pushable:
         """Is there at least N items in the queue, without changing the queue"""
         if len(self._stored) >= N:
             return True
-        self.peekOr( skip=N )
+        self.skipPeekOr( skip=N )
         return len(self._stored) >= N
 
-    def push(self, *values):
+    def push(self, value):
         """
-        Pushes one or more items onto the queue in order, so that the last item
-        becomes the new head of the queue.
+        Pushes one item onto the queue, so that it is the new head of the queue.
         """
-        self.stored.extend(values)
+        self._stored.append(value)
+
+    def multiPush(self, *values):
+        """
+        Pushes one or more items onto the queue in reverse order, so that the 
+        first item becomes the new head of the queue.
+        """
+        self._stored.extend(reversed(values))
 
     def peek(self):
         """
         Gets an item from the head of the queue without affecting the
         queue. There must be at least one item or StopIteration is raised.
         """
-        if self.stored:
-            return self.stored[-1]
-        value = next(self.source)
-        self.stored.append(value)
+        if self._stored:
+            return self._stored[-1]
+        value = next(self._source)
+        self._stored.append(value)
         return value
-
 
     def skipPeek(self, skip:int=0):
         """
@@ -66,24 +71,24 @@ class Pushable:
         unaffected.
         """
         while len(self._stored) <= skip:
-            value = next(self.source)
+            value = next(self._source)
             self._stored.appendleft(value)
-        return self.stored[-1-skip]
+        return self._stored[-1-skip]
 
     def multiPeek( self, skip:int=0, count:int=1):
         total = skip + count
-        while len(self._stored) <= total:
-            value = next(self.source)
+        while len(self._stored) < total:
+            value = next(self._source)
             self._stored.appendleft(value)
         for i in range( 0, count ):
             yield self._stored[-1-skip-i]
-
+    
     def peekOr(self, default=None):
-        if self.stored:
-            return self.stored[-1]
+        if self._stored:
+            return self._stored[-1]
         try:
-            value = next(self.source)
-            self.stored.append(value)
+            value = next(self._source)
+            self._stored.append(value)
             return value        
         except StopIteration:
             return default
@@ -96,23 +101,26 @@ class Pushable:
         """
         try:
             while len(self._stored) <= skip:
-                value = next(self.source)
+                value = next(self._source)
                 self._stored.appendleft(value)
-            return self.stored[-1-skip]
+            return self._stored[-1-skip]
         except StopIteration:
             return default
 
     def multiPeekOr(self, default=None, skip:int=0, count:int=1) -> Iterator[Any]:
+        total = skip + count
         try:
-            while len(self._stored) <= skip:
-                value = next(self.source)
+            while len(self._stored) < total:
+                value = next(self._source)
                 self._stored.appendleft(value)
             for i in range( 0, count ):
                 yield self._stored[-1-skip-i]
         except StopIteration:
-            for i in range( 0, len( self._stored ) ):
-                yield self._stored[-1-skip-i]
-            for i in range( 0, count - len( self._stored ) ):
+            yields_remaining = count
+            for i in reversed( range( 0, len( self._stored ) - skip ) ):
+                yield self._stored[i]
+                yields_remaining -= 1
+            for _ in range( 0, yields_remaining ):
                 yield default     
 
     def pop(self):
@@ -149,10 +157,10 @@ class Pushable:
         queues. If there is less than 1 item, return the supplied default value
         instead.
         """
-        if self.stored:
-            return self.stored.pop()
+        if self._stored:
+            return self._stored.pop()
         try:
-            return next(self.source)        
+            return next(self._source)        
         except StopIteration:
             return default
 
@@ -184,6 +192,6 @@ class Pushable:
         Get the next item if one is available, removing it from the list.
         Otherwise raises StopException.
         """
-        if self.stored:
-            return self.stored.pop()
-        return next(self.source)
+        if self._stored:
+            return self._stored.pop()
+        return next(self._source)
