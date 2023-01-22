@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "pushable"
+version = "0.1.0"
+description = "Convert iterators into pushable iterators"
+authors = ["Stephen Leach <sfkleach@gmail.com>"]
+license = "GNU General Public License v3"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
