@@ -32,7 +32,7 @@ class Pushable:
             return False
         return True
 
-    def len_at_least( self, N:int ):
+    def lenAtLeast( self, N:int ):
         """Is there at least N items in the queue, without changing the queue"""
         if len(self._stored) >= N:
             return True
@@ -175,7 +175,7 @@ class Pushable:
         except StopIteration:
             return default
 
-    def multiPopOr(self, skip:int=0, count:int=1) -> Iterator[Any]:
+    def multiPopOr(self, default=None, skip:int=0, count:int=1) -> Iterator[Any]:
         yields_remaining = count
         try:
             for _ in range( 0, skip ):
@@ -185,7 +185,7 @@ class Pushable:
                 yields_remaining -= 1
         except StopIteration:
             for i in range( 0, yields_remaining ):
-                yield self.__next__()
+                yield default
 
     def __next__(self):
         """
