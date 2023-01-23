@@ -13,6 +13,10 @@ def test_bool_nonempty():
 
 ## test __iter__ via list
 
+def test_iter_empty():
+    p = Pushable( "" )
+    assert [] == list(p)
+
 def test_iter_nonempty():
     p = Pushable( "abc" )
     assert ["a", "b", "c"] == list(p)
@@ -24,6 +28,15 @@ def test_next_empty():
     with pytest.raises(StopIteration):
         next(p)
 
+def test_next_nonempty():
+    p = Pushable( "x" )
+    assert "x" == next(p)
+
+def test_next_after_push():
+    p = Pushable( "" )
+    p.push( "xxx" )
+    assert "xxx" == next(p)
+
 ### test the peek family
 
 def test_peek_empty():
@@ -34,6 +47,7 @@ def test_peek_empty():
 def test_peek_nonempty():
     p = Pushable( "abc" )
     assert "a" == p.peek()
+    assert "a" == p.peek()
 
 def test_skipPeek_empty():
     p = Pushable( "" )
@@ -42,6 +56,7 @@ def test_skipPeek_empty():
 
 def test_skipPeek_nonempty_enough():
     p = Pushable( "abc" )
+    assert "b" == p.skipPeek(skip=1)
     assert "b" == p.skipPeek(skip=1)
 
 def test_skipPeek_nonempty_tooMany():
@@ -52,26 +67,32 @@ def test_skipPeek_nonempty_tooMany():
 def test_peekOr_empty():
     p = Pushable( "" )
     assert None is p.peekOr()
+    assert None is p.peekOr()
 
 def test_peekOr_empty_with_default():
     p = Pushable( "" )
     arbitrary_value = 999
     assert arbitrary_value is p.peekOr(arbitrary_value)
+    assert arbitrary_value is p.peekOr(arbitrary_value)
 
 def test_peekOr_nonempty():
     p = Pushable( "abc" )
+    assert "a" == p.peek()
     assert "a" == p.peek()
 
 def test_peekOr_nonempty_with_default():
     p = Pushable( "abc" )
     assert "a" == p.peekOr(999)
+    assert "a" == p.peekOr(999)
 
 def test_multiPeek_empty():
     p = Pushable( "" )
     assert [] == list(p.multiPeek(skip=0, count=0))
+    assert [] == list(p.multiPeek(skip=0, count=0))
 
 def test_multiPeek_nonempty_enough():
     p = Pushable( "abcdef" )
+    assert ["b", "c"] == list(p.multiPeek(skip=1, count=2))
     assert ["b", "c"] == list(p.multiPeek(skip=1, count=2))
 
 def test_multiPeek_nonempty_tooMany():
@@ -82,15 +103,106 @@ def test_multiPeek_nonempty_tooMany():
 def test_multiPeekOr_empty():
     p = Pushable( "" )
     assert [] == list(p.multiPeekOr(skip=0, count=0))
+    assert [] == list(p.multiPeekOr(skip=0, count=0))
 
 def test_multiPeekOr_nonempty_enough():
     p = Pushable( "abcdef" )
+    assert ["b", "c"] == list(p.multiPeekOr(skip=1, count=2))
     assert ["b", "c"] == list(p.multiPeekOr(skip=1, count=2))
 
 def test_multiPeekOr_nonempty_tooMany():
     p = Pushable( "abcdef" )
     assert ("f", None, None) == tuple(p.multiPeekOr(skip=5, count=3))
+    assert ("f", None, None) == tuple(p.multiPeekOr(skip=5, count=3))
 
+### test the pop family
+
+def test_pop_empty():
+    p = Pushable( "" )
+    with pytest.raises(StopIteration):
+        p.pop()
+
+def test_pop_nonempty():
+    p = Pushable( "abc" )
+    assert "a" == p.pop()
+    assert "b" == p.pop()
+    assert "c" == p.pop()
+    with pytest.raises(StopIteration):
+        p.pop()
+
+def test_skipPop_empty():
+    p = Pushable( "" )
+    with pytest.raises(StopIteration):
+        p.skipPop()
+
+def test_skipPop_nonempty_enough():
+    p = Pushable( "abc" )
+    assert "b" == p.skipPop(skip=1)
+    with pytest.raises(StopIteration):
+        p.skipPop(skip=1)
+        
+def test_skipPop_nonempty_tooMany():
+    p = Pushable( "abc" )
+    with pytest.raises(StopIteration):
+        p.skipPop(skip=4)
+
+def test_popOr_empty():
+    p = Pushable( "" )
+    assert None is p.popOr()
+    assert None is p.popOr()
+
+def test_popOr_empty_with_default():
+    p = Pushable( "" )
+    arbitrary_value = 999
+    assert arbitrary_value is p.popOr(arbitrary_value)
+    assert arbitrary_value is p.popOr(arbitrary_value)
+
+def test_popOr_nonempty():
+    p = Pushable( "abc" )
+    assert "a" == p.popOr()
+    assert "b" == p.popOr()
+
+def test_popOr_nonempty_with_default():
+    p = Pushable( "abc" )
+    assert "a" == p.popOr(999)
+    assert "b" == p.popOr(999)
+
+def test_multiPop_empty():
+    p = Pushable( "" )
+    assert [] == list(p.multiPop(skip=0, count=0))
+    assert [] == list(p.multiPop(skip=0, count=0))
+
+def test_multiPop_nonempty_enough():
+    p = Pushable( "abcdef" )
+    assert ["b", "c"] == list(p.multiPop(skip=1, count=2))
+    assert ["e", "f"] == list(p.multiPop(skip=1, count=2))
+
+def test_multiPop_nonempty_tooMany():
+    p = Pushable( "abcdef" )
+    with pytest.raises(RuntimeError):
+        tuple(p.multiPop(skip=5, count=2))
+
+def test_multiPopOr_empty():
+    p = Pushable( "" )
+    assert [] == list(p.multiPopOr(skip=0, count=0))
+    assert [] == list(p.multiPopOr(skip=0, count=0))
+
+def test_multiPopOr_nonempty_enough():
+    p = Pushable( "abcdef" )
+    assert ["b", "c"] == list(p.multiPopOr(skip=1, count=2))
+    assert ["e", "f"] == list(p.multiPopOr(skip=1, count=2))
+
+def test_multiPopOr_nonempty_tooMany():
+    p = Pushable( "abcdef" )
+    assert ("f", None, None) == tuple(p.multiPopOr(skip=5, count=3))
+    assert (None, None, None) == tuple(p.multiPopOr(skip=5, count=3))
+
+def test_lenAtLeast():
+    p = Pushable( "abcdef" )
+    assert p.lenAtLeast( 3 )
+    p.push( 99 )
+    assert p.lenAtLeast( 7 )
+    assert not p.lenAtLeast( 8 )
 
 
 ### test the push family
