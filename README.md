@@ -99,4 +99,4 @@ print( list( count_up ) )
 # Prints: ['cat', 'dog', 'rabbit']
 ```
 
-For a full set of available method see [the documentation](https://pushable.readthedocs/).
+For a full set of available method see [the documentation](https://pushable.readthedocs.io/).
