@@ -12,6 +12,7 @@ class Pushable( Iterator ):
     """
 
     def __init__(self, source):
+        """Creates a pushable iterator from any iterable."""
         self._source: Iterator[Any] = iter(source)
         self._stored = deque()
 
@@ -76,6 +77,12 @@ class Pushable( Iterator ):
         return self._stored[-1-skip]
 
     def multiPeek( self, skip:int=0, count:int=1):
+        """
+        Returns zero, one or more items from the front of the queue, as an 
+        iterator, optionally skipping the first N items. There must be at least 
+        N+count items or a RuntimeError will be raised. The queue will not be 
+        affected, although it may be partly instantiated.
+        """
         total = skip + count
         while len(self._stored) < total:
             value = next(self._source)
@@ -108,6 +115,13 @@ class Pushable( Iterator ):
             return default
 
     def multiPeekOr(self, default=None, skip:int=0, count:int=1) -> Iterator[Any]:
+        """
+        Returns zero, one or more items from the front of the queue as an iterable, optionally
+        skipping the first N items. If there are insufficient items in the queue,
+        the default value is substituted sufficient to make up the numbers.
+        The queue will not be affected, although it will likely be partly 
+        instantiated.
+        """      
         total = skip + count
         try:
             while len(self._stored) < total:
@@ -146,15 +160,21 @@ class Pushable( Iterator ):
             return self.__next__()
 
     def multiPop(self, skip:int=0, count:int=1) -> Iterator[Any]:
+        """
+        Removes and returns zero, one or more items from the front of the queue
+        as an iterator, optionally skipping the first N items. There must be at 
+        least N+count items or a RuntimeError will be raised.
+        """
         for _ in range( 0, skip ):
             self.__next__()
         for i in range( 0, count ):
             yield self.__next__()        
 
+
     def popOr( self, default=None ):
         """
         Gets an item from the head of the queue, removing it from the
-        queues. If there is less than 1 item, return the supplied default value
+        queue. If there is less than 1 item, return the supplied default value
         instead.
         """
         if self._stored:
@@ -176,6 +196,11 @@ class Pushable( Iterator ):
             return default
 
     def multiPopOr(self, default=None, skip:int=0, count:int=1) -> Iterator[Any]:
+        """
+        Removes and returns zero, one or more items from the front of the queue, optionally
+        skipping the first skip+count items. If there are insufficient items
+        available then the default value is substututed as many times as needed.
+        """
         yields_remaining = count
         try:
             for _ in range( 0, skip ):
