@@ -3,3 +3,6 @@
 /src/pushable/__pycache__/
 /tests/.pytest_cache/
 /tests/__pycache__/
+/dist/
+/docs/.pytest_cache/
+/docs/_build/

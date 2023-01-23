@@ -1,7 +1,7 @@
 from collections import deque
 from typing import Iterator, Any;
 
-class Pushable:
+class Pushable( Iterator ):
     """
     Wraps an iterator so that it supports peeking and pushing, much like
     a LIFO queue (aka stack). Another way of looking at it is a lazy queue
@@ -16,7 +16,7 @@ class Pushable:
         self._stored = deque()
 
     def __iter__(self):
-        """Returns itself, like any other iterator"""
+        """Returns itself, like any other iterator."""
         return self
 
     def __bool__(self):
@@ -33,7 +33,7 @@ class Pushable:
         return True
 
     def lenAtLeast( self, N:int ):
-        """Is there at least N items in the queue, without changing the queue"""
+        """Are there at least N items in the queue? Does not change the queue."""
         if len(self._stored) >= N:
             return True
         self.skipPeekOr( skip=N )

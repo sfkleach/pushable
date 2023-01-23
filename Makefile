@@ -43,8 +43,8 @@ publish-to-main:
 
 .PHONY: publish-to-test
 publish-to-test: 
-	if [ -e tests/pushable.py ]; then echo RETEST_WITHOUT_LINK; exit 1; fi
-	poetry publish -r test-pypi --dry-run --build
+	poetry publish -r test-pypi --build
+
 
 # Post-installation tests
 .PHONY: test
