@@ -1,9 +1,24 @@
 [tool.poetry]
 name = "pushable"
 version = "0.1.0"
-description = "Convert iterators into pushable iterators"
+description = "Convert iterators into peekable, pushable iterators"
 authors = ["Stephen Leach <sfkleach@gmail.com>"]
-license = "GNU General Public License v3"
+license = "GPL-3.0-or-later"
+readme="README.md"
+homepage="https://pushable.readthedocs.io/en/latest/"
+documentation="https://pushable.readthedocs.io/en/latest/"
+repository = "https://github.com/sfkleach/pushable"
+keywords = ["iterators", "pushable", "peekable"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed"
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
