@@ -14,7 +14,7 @@ SHELL:=/bin/bash
 .SHELLFLAGS:=-e -o pipefail -c
 
 # Invoke the all target when no target is explicitly specified.
-.DEFAULT_GOAL:=all
+.DEFAULT_GOAL:=help
 
 # Delete targets if their recipe exits with a non-zero exit code.
 .DELETE_ON_ERROR:
@@ -27,8 +27,14 @@ SHELL:=/bin/bash
 .PHONY: help
 help:
 	# Valid targets are:
-	#	publish-to-main - publishes to the PyPi archive.
+	#	test 			- runs the unit tests
+	#	docs			- builds Sphinx docs locally
+	#	publish-to-live - publishes to the PyPi archive.
 	#   publish-to-test - publishes to the Pypi Test archive.
+
+.PHONY: docs
+docs:
+	poetry run make -C docs html
 
 # These commands should be run locally before continuing
 # 	poetry config repositories.pypi https://pypi.org/legacy/
@@ -36,10 +42,9 @@ help:
 # 	poetry config repositories.test-pypi https://test.pypi.org/legacy/
 # 	poetry config pypi-token.test-pypi <your-token>
 
-.PHONY: publish-to-main
-publish-to-main:
+.PHONY: publish-to-live
+publish-to-live:
 	poetry publish -r pypi --dry-run --build
-
 
 .PHONY: publish-to-test
 publish-to-test: 
