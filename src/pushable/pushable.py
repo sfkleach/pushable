@@ -91,6 +91,10 @@ class Pushable( Iterator ):
             yield self._stored[-1-skip-i]
     
     def peekOr(self, default=None):
+        """
+        Gets an item from the head of the queue without affecting the
+        queue. If no item is available the default value is returned.
+        """
         if self._stored:
             return self._stored[-1]
         try:
