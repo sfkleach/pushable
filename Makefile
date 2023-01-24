@@ -36,7 +36,9 @@ help:
 docs:
 	poetry run make -C docs html
 
-# These commands should be run locally before continuing
+# ATM I do not intend for updates of the PyPI archive to be run automagically.
+# So these commands should be run locally before trying to update the PyPI
+# archives.
 # 	poetry config repositories.pypi https://pypi.org/legacy/
 # 	poetry config pypi-token.pypi <your-token>
 # 	poetry config repositories.test-pypi https://test.pypi.org/legacy/
