@@ -1,6 +1,6 @@
 ## Package Description
 
-[![Documentation Status](https://readthedocs.org/projects/pushable/badge/?version=latest)](https://pushable.readthedocs.io/en/latest/?badge=latest)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/sfkleach/pushable/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/sfkleach/pushable/tree/main) [![Documentation Status](https://readthedocs.org/projects/pushable/badge/?version=latest)](https://pushable.readthedocs.io/en/latest/?badge=latest)
 
 This is a Python package that provides a simple class Pushable that creates "pushable" iterators by wrapping an inner iterator/iterable. Pushable iterators act like dynamically expanding queues, allowing you to peek ahead or push items back onto the queue.
 

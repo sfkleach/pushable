@@ -10,6 +10,8 @@ Pushable, Peekable Iterators
    :maxdepth: 2
    :caption: Contents:
 
+.. image:: https://dl.circleci.com/status-badge/img/gh/sfkleach/pushable/tree/main.svg?style=svg
+        :target: https://dl.circleci.com/status-badge/redirect/gh/sfkleach/pushable/tree/main
 
 .. image:: https://readthedocs.org/projects/pushable/badge/?version=latest
     :target: https://pushable.readthedocs.io/en/latest/?badge=latest
