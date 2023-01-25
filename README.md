@@ -94,7 +94,6 @@ print( second, third )
 Lastly, we can push multiple items with `multiPush`:
 ```py
 count_up.multiPush("cat", "dog", "rabbit")
-count_up.push("dog")
 print( list( count_up ) )
 # Prints: ['cat', 'dog', 'rabbit']
 ```
