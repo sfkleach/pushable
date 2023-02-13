@@ -1,7 +1,9 @@
 from collections import deque
-from typing import Iterator, Any;
+from typing import Iterator, Any, TypeVar, Generic;
 
-class Pushable( Iterator ):
+T = TypeVar('T')
+
+class Pushable( Iterator[T] ):
     """
     Wraps an iterator so that it supports peeking and pushing, much like
     a LIFO queue (aka stack). Another way of looking at it is a lazy queue
@@ -16,11 +18,11 @@ class Pushable( Iterator ):
         self._source: Iterator[Any] = iter(source)
         self._stored: deque[Any] = deque()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T]:
         """Returns itself, like any other iterator."""
         return self
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         """
         Use this to test if the iterator is exhaused. Returns True if another 
         item is available, otherwise False.
@@ -33,7 +35,7 @@ class Pushable( Iterator ):
             return False
         return True
 
-    def lenAtLeast( self, N:int ):
+    def lenAtLeast( self, N:int ) -> bool:
         """Are there at least N items in the queue? Does not change the queue."""
         if len(self._stored) >= N:
             return True
@@ -53,7 +55,7 @@ class Pushable( Iterator ):
         """
         self._stored.extend(reversed(values))
 
-    def peek(self):
+    def peek(self) -> T:
         """
         Gets an item from the head of the queue without affecting the
         queue. There must be at least one item or StopIteration is raised.
@@ -64,7 +66,7 @@ class Pushable( Iterator ):
         self._stored.append(value)
         return value
 
-    def skipPeek(self, skip:int=0):
+    def skipPeek(self, skip:int=0) -> T:
         """
         Gets an item from the head of the queue without affecting the
         queue, optionally skipping the first N items. There must be at least
@@ -90,7 +92,7 @@ class Pushable( Iterator ):
         for i in range( 0, count ):
             yield self._stored[-1-skip-i]
     
-    def peekOr(self, default=None):
+    def peekOr(self, default=None) -> Any:
         """
         Gets an item from the head of the queue without affecting the
         queue. If no item is available the default value is returned.
@@ -104,7 +106,7 @@ class Pushable( Iterator ):
         except StopIteration:
             return default
 
-    def skipPeekOr(self, default=None, skip:int=0):
+    def skipPeekOr(self, default=None, skip:int=0) -> Any:
         """
         Gets an item from the head of the queue without affecting the
         queue, optionally skipping the first N items. If there are less
@@ -141,7 +143,7 @@ class Pushable( Iterator ):
             for _ in range( 0, yields_remaining ):
                 yield default     
 
-    def pop(self):
+    def pop(self) -> T:
         """
         Gets an item from the head of the queue, removing it from the
         queue. If there are less than 1 item, raise StopIteration. This
@@ -149,7 +151,7 @@ class Pushable( Iterator ):
         """
         return self.__next__()
 
-    def skipPop(self, skip:int=0):
+    def skipPop(self, skip:int=0) -> T:
         """
         Gets an item from the head of the queue, removing it from the
         queue, optionally removing the preceding N items. If there are less
@@ -175,7 +177,7 @@ class Pushable( Iterator ):
             yield self.__next__()        
 
 
-    def popOr( self, default=None ):
+    def popOr( self, default=None ) -> Any:
         """
         Gets an item from the head of the queue, removing it from the
         queue. If there is less than 1 item, return the supplied default value
@@ -188,7 +190,7 @@ class Pushable( Iterator ):
         except StopIteration:
             return default
 
-    def skipPopOr( self, default=None, skip:int=0 ):
+    def skipPopOr( self, default=None, skip:int=0 ) -> Any:
         """
         Gets an item from the head of the queue, removing it from the
         queue, optionally removing the preceding N items. If there are less
@@ -216,7 +218,7 @@ class Pushable( Iterator ):
             for i in range( 0, yields_remaining ):
                 yield default
 
-    def __next__(self):
+    def __next__(self) -> T:
         """
         Get the next item if one is available, removing it from the list.
         Otherwise raises StopException.

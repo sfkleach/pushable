@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pushable"
-version = "0.1.4"
+version = "0.1.5"
 description = "Convert iterators into peekable, pushable iterators"
 authors = ["Stephen Leach <sfkleach@gmail.com>"]
 license = "GPL-3.0-or-later"

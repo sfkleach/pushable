@@ -55,7 +55,15 @@ publish-to-test:
 
 # Post-installation tests
 .PHONY: test
-test:
-	poetry run mypy --check-untyped-defs src/pushable/pushable.py
-	poetry run pytest tests
+test: tc ut
 
+# tc = type check
+.PHONY: tc
+tc:
+	poetry run mypy --check-untyped-defs src/pushable/pushable.py
+	MYPYPATH=src poetry run mypy --check-untyped-defs tests/test_pushable.py
+
+# ut = unit tests
+.PHONY: ut
+ut:
+	poetry run pytest tests

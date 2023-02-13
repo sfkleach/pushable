@@ -2,6 +2,14 @@
 
 Following the style in https://keepachangelog.com/en/1.0.0/
 
+## [0.1.5] Include type annotations, 2023-02-13
+
+## Added
+
+- Added py.typing so that type annotations can be type-checked when the pushable
+  package is imported.
+
+
 ## [0.1.4] Fixes skipPopOr, 2023-02-13
 
 ## Added
