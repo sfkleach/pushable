@@ -29,7 +29,7 @@ help:
 	# Valid targets are:
 	#	test 			- runs the unit tests
 	#	docs			- builds Sphinx docs locally
-	#	publish-to-live - publishes to the PyPi archive.
+	#	publish         - publishes to the PyPi archive.
 	#   publish-to-test - publishes to the Pypi Test archive.
 
 .PHONY: docs
@@ -44,9 +44,9 @@ docs:
 # 	poetry config repositories.test-pypi https://test.pypi.org/legacy/
 # 	poetry config pypi-token.test-pypi <your-token>
 
-.PHONY: publish-to-live
-publish-to-live:
-	poetry publish -r pypi --dry-run --build
+.PHONY: publish
+publish:
+	poetry publish --build
 
 .PHONY: publish-to-test
 publish-to-test:
