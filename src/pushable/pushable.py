@@ -14,7 +14,7 @@ class Pushable( Iterator ):
     def __init__(self, source):
         """Creates a pushable iterator from any iterable."""
         self._source: Iterator[Any] = iter(source)
-        self._stored = deque()
+        self._stored: deque[Any] = deque()
 
     def __iter__(self):
         """Returns itself, like any other iterator."""
@@ -195,7 +195,7 @@ class Pushable( Iterator ):
         than N+1 items, return the supplied default value.
         """
         try:
-            return self.SkipPop(default = default, skip=skip)
+            return self.skipPop(skip=skip)
         except StopIteration:
             return default
 

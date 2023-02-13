@@ -146,6 +146,19 @@ def test_skipPop_nonempty_tooMany():
     with pytest.raises(StopIteration):
         p.skipPop(skip=4)
 
+def test_skipPopOr_empty():
+    p = Pushable( "" )
+    assert 99 == p.skipPopOr(default=99)
+
+def test_skipPopOr_nonempty_enough():
+    p = Pushable( "abc" )
+    assert "b" == p.skipPop(skip=1)
+    assert 99 == p.skipPopOr(skip=1, default=99)
+        
+def test_skipPopOr_nonempty_tooMany():
+    p = Pushable( "abc" )
+    assert None is p.skipPopOr(skip=4)
+
 def test_popOr_empty():
     p = Pushable( "" )
     assert None is p.popOr()

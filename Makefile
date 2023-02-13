@@ -49,12 +49,13 @@ publish-to-live:
 	poetry publish -r pypi --dry-run --build
 
 .PHONY: publish-to-test
-publish-to-test: 
+publish-to-test:
 	poetry publish -r test-pypi --build
 
 
 # Post-installation tests
 .PHONY: test
 test:
+	poetry run mypy --check-untyped-defs src/pushable/pushable.py
 	poetry run pytest tests
 
