@@ -2,6 +2,15 @@
 
 Following the style in https://keepachangelog.com/en/1.0.0/
 
+## [0.1.6] Protecting against possible vulnerability
+
+## Changed
+
+- poetry.lock of sister project lazychains had vulnerability reported. This
+  is a proactive update of poetry.lock.
+
+## Added
+
 ## [0.1.5] Include type annotations, 2023-02-13
 
 ## Added

@@ -32,9 +32,11 @@ help:
 	#	publish         - publishes to the PyPi archive.
 	#   publish-to-test - publishes to the Pypi Test archive.
 
+POETRY=$(shell command -v poetry)
+
 .PHONY: docs
 docs:
-	poetry run make -C docs html
+	$(POETRY) run make -C docs html
 
 # ATM I do not intend for updates of the PyPI archive to be run automagically.
 # So these commands should be run locally before trying to update the PyPI
@@ -46,24 +48,26 @@ docs:
 
 .PHONY: publish
 publish:
-	poetry publish --build
+	$(POETRY) publish --build
 
 .PHONY: publish-to-test
 publish-to-test:
-	poetry publish -r test-pypi --build
+	$(POETRY) publish -r test-pypi --build
 
 
 # Post-installation tests
 .PHONY: test
-test: tc ut
+test: type_check unit_test
 
 # tc = type check
-.PHONY: tc
-tc:
-	poetry run mypy --check-untyped-defs src/pushable/pushable.py
+.PHONY: type_check
+type_check:
+	$(POETRY) run mypy --check-untyped-defs src/pushable/pushable.py
 	MYPYPATH=src poetry run mypy --check-untyped-defs tests/test_pushable.py
 
 # ut = unit tests
-.PHONY: ut
-ut:
-	poetry run pytest tests
+#	If this fails because it cannot find the pushable package, check
+#	that you have done a local poetry install.
+.PHONY: unit_test
+unit_test:
+	$(POETRY) run pytest tests
