@@ -2,6 +2,12 @@
 
 Following the style in https://keepachangelog.com/en/1.0.0/
 
+# [0.1.7] Updating dependencies, 2024-08-13
+
+## Changed
+
+- poetry.lock due to dependabot alert.
+
 # [0.1.7] Updating dependencies
 
 ## [0.1.6] Protecting against possible vulnerability
