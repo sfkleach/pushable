@@ -1,3 +1,5 @@
+# Load the .env file if it exists, so that environment variables are available to the justfile.
+# Only relevant when releasing from a local machine - which is not required amy more.
 set dotenv-load
 
 # Lists available commands
