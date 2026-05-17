@@ -28,6 +28,10 @@ publish-to-test:
 	uv build && uv publish --publish-url https://test.pypi.org/legacy/
 
 
+# Checks the project is ready to release
+pre-release:
+	bash scripts/pre-release-check.sh
+
 # Post-installation tests
 test: type_check unit_test
 

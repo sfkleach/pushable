@@ -1,6 +1,6 @@
 [project]
 name = "pushable"
-version = "0.1.8"
+version = "0.1.9"
 description = "Convert iterators into peekable, pushable iterators"
 authors = [{name = "Stephen Leach", email = "sfkleach@gmail.com"}]
 license = {text = "GPL-3.0-or-later"}
