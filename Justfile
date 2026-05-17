@@ -29,7 +29,7 @@ publish-to-test:
 
 
 # Checks the project is ready to release
-pre-release:
+pre-release: test
 	bash scripts/pre-release-check.sh
 
 # Post-installation tests
