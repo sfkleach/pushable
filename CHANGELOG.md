@@ -2,6 +2,13 @@
 
 Following the style in https://keepachangelog.com/en/1.0.0/
 
+# [0.1.8] Switch to uv and updated dependencies, 2026-05-17
+
+## Changed
+
+- Switched from poetry to uv
+- Updated dependencies
+
 # [0.1.7] Updating dependencies, 2024-08-13
 
 ## Changed
