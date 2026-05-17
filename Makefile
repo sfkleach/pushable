@@ -32,27 +32,23 @@ help:
 	#	publish         - publishes to the PyPi archive.
 	#   publish-to-test - publishes to the Pypi Test archive.
 
-POETRY=$(shell command -v poetry)
-
 .PHONY: docs
 docs:
-	$(POETRY) run make -C docs html
+	uv run make -C docs html
 
 # ATM I do not intend for updates of the PyPI archive to be run automagically.
 # So these commands should be run locally before trying to update the PyPI
 # archives.
-# 	poetry config repositories.pypi https://pypi.org/legacy/
-# 	poetry config pypi-token.pypi <your-token>
-# 	poetry config repositories.test-pypi https://test.pypi.org/legacy/
-# 	poetry config pypi-token.test-pypi <your-token>
+# 	export UV_PUBLISH_TOKEN=<your-pypi-token>
+# 	export UV_PUBLISH_TOKEN=<your-test-pypi-token>  (for test-pypi)
 
 .PHONY: publish
 publish:
-	$(POETRY) publish --build
+	uv build && uv publish
 
 .PHONY: publish-to-test
 publish-to-test:
-	$(POETRY) publish -r test-pypi --build
+	uv build && uv publish --publish-url https://test.pypi.org/legacy/
 
 
 # Post-installation tests
@@ -62,12 +58,12 @@ test: type_check unit_test
 # tc = type check
 .PHONY: type_check
 type_check:
-	$(POETRY) run mypy --check-untyped-defs src/pushable/pushable.py
-	MYPYPATH=src poetry run mypy --check-untyped-defs tests/test_pushable.py
+	uv run mypy --check-untyped-defs src/pushable/pushable.py
+	MYPYPATH=src uv run mypy --check-untyped-defs tests/test_pushable.py
 
 # ut = unit tests
 #	If this fails because it cannot find the pushable package, check
-#	that you have done a local poetry install.
+#	that you have done a local uv sync.
 .PHONY: unit_test
 unit_test:
-	$(POETRY) run pytest tests
+	uv run pytest tests

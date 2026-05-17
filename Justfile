@@ -1,30 +1,31 @@
+set dotenv-load
+
 # Lists available commands
-help:
+@default:
     just --list
 
 # Builds the documentation
 docs:
-	cd docs && poetry run make html
+	cd docs && uv run make html
 
-# Cleans the docs directory
+# Cleans the docs directory and dist/
 clean:
-	cd docs && poetry run make clean
+	cd docs && uv run make clean
+	rm -rf dist
 
 # ATM I do not intend for updates of the PyPI archive to be run automagically.
 # So these commands should be run locally before trying to update the PyPI
 # archives.
-# 	poetry config repositories.pypi https://pypi.org/legacy/
-# 	poetry config pypi-token.pypi <your-token>
-# 	poetry config repositories.test-pypi https://test.pypi.org/legacy/
-# 	poetry config pypi-token.test-pypi <your-token>
+# 	export UV_PUBLISH_TOKEN=<your-pypi-token>
+# 	export UV_PUBLISH_TOKEN=<your-test-pypi-token>  (for test-pypi)
 
 # Publishes the package to PyPI
 publish:
-	poetry publish --build
+	uv build && uv publish
 
 # Publishes the package to the test PyPI
 publish-to-test:
-	poetry publish -r test-pypi --build
+	uv build && uv publish --publish-url https://test.pypi.org/legacy/
 
 
 # Post-installation tests
@@ -32,12 +33,12 @@ test: type_check unit_test
 
 # Type checks the code
 type_check:
-	poetry run mypy --check-untyped-defs src/pushable/pushable.py
-	MYPYPATH=src poetry run mypy --check-untyped-defs tests/test_pushable.py
+	uv run mypy --check-untyped-defs src/pushable/pushable.py
+	MYPYPATH=src uv run mypy --check-untyped-defs tests/test_pushable.py
 
 # ut = unit tests
 #	If this fails because it cannot find the pushable package, check
-#	that you have done a local poetry install.
+#	that you have done a local uv sync.
 # Runs unit tests
 unit_test:
-	poetry run pytest tests
+	uv run pytest tests

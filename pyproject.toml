@@ -1,13 +1,11 @@
-[tool.poetry]
+[project]
 name = "pushable"
 version = "0.1.8"
 description = "Convert iterators into peekable, pushable iterators"
-authors = ["Stephen Leach <sfkleach@gmail.com>"]
-license = "GPL-3.0-or-later"
-readme="README.md"
-homepage="https://pushable.readthedocs.io/en/latest/"
-documentation="https://pushable.readthedocs.io/en/latest/"
-repository = "https://github.com/sfkleach/pushable"
+authors = [{name = "Stephen Leach", email = "sfkleach@gmail.com"}]
+license = {text = "GPL-3.0-or-later"}
+readme = "README.md"
+requires-python = ">=3.12"
 keywords = ["iterators", "pushable", "peekable"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -20,14 +18,21 @@ classifiers = [
     "Typing :: Typed"
 ]
 
-[tool.poetry.dependencies]
-python = "^3.10"
+[project.urls]
+Homepage = "https://pushable.readthedocs.io/en/latest/"
+Documentation = "https://pushable.readthedocs.io/en/latest/"
+Repository = "https://github.com/sfkleach/pushable"
 
-[tool.poetry.dev-dependencies]
-pytest = "^7.2.1"
-mypy = "^1.0.0"
-Sphinx = "^7.0.1"
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+    "mypy>=2.1.0",
+    "Sphinx>=9.1.0",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pushable"]
