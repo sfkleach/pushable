@@ -2,7 +2,7 @@
 
 Following the style in https://keepachangelog.com/en/1.0.0/
 
-# [0.1.8] Switch to uv and updated dependencies, 2026-05-17
+# [0.1.9] Switch to uv and updated dependencies, 2026-05-17
 
 ## Changed
 
@@ -10,7 +10,7 @@ Following the style in https://keepachangelog.com/en/1.0.0/
 - Updated dependencies
 - Switched from CircleCI to GitHub CI workflow & added release workflow
 
-# [0.1.7] Updating dependencies, 2024-08-13
+# [0.1.8] Updating dependencies, 2024-08-13
 
 ## Changed
 
