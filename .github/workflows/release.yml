@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Check CHANGELOG matches tag
+        run: |
+          tag_version="${GITHUB_REF_NAME#v}"
+          heading=$(grep -m1 '^# ' CHANGELOG.md)
+          changelog_version=$(echo "$heading" | grep -oE '\[[0-9]+\.[0-9]+\.[0-9]+\]' | tr -d '[]')
+          if [ "$changelog_version" != "$tag_version" ]; then
+            echo "CHANGELOG version [$changelog_version] does not match tag [$tag_version]"
+            exit 1
+          fi
+          if ! echo "$heading" | grep -qE '[0-9]{4}-[0-9]{2}-[0-9]{2}'; then
+            echo "CHANGELOG top entry must include a date (YYYY-MM-DD)"
+            exit 1
+          fi
+
+      - name: Sync dependencies
+        run: uv sync
+
+      - name: Test
+        run: uv run make test
+
+      - name: Extract release notes
+        run: |
+          awk 'found && /^# /{exit} /^# \[/{found=1; next} found{print}' CHANGELOG.md \
+            > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "Could not extract release notes from CHANGELOG.md"
+            exit 1
+          fi
+
+      - name: Build
+        run: uv build
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "Release $GITHUB_REF_NAME" \
+            --notes-file release-notes.md \
+            dist/*
+
+      - name: Publish to PyPI
+        run: uv publish
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}

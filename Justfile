@@ -8,9 +8,10 @@ set dotenv-load
 docs:
 	cd docs && uv run make html
 
-# Cleans the docs directory
+# Cleans the docs directory and dist/
 clean:
 	cd docs && uv run make clean
+	rm -rf dist
 
 # ATM I do not intend for updates of the PyPI archive to be run automagically.
 # So these commands should be run locally before trying to update the PyPI
