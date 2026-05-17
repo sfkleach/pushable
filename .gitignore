@@ -6,3 +6,4 @@
 /dist/
 /docs/.pytest_cache/
 /docs/_build/
+/.env

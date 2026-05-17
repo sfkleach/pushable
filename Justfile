@@ -1,5 +1,7 @@
+set dotenv-load
+
 # Lists available commands
-help:
+@default:
     just --list
 
 # Builds the documentation
