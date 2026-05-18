@@ -9,7 +9,7 @@ requires-python = ">=3.12"
 keywords = ["iterators", "pushable", "peekable"]
 classifiers = [
     "Development Status :: 4 - Beta",
-    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Intended Audience :: Developers",
     "Natural Language :: English",
     "Operating System :: OS Independent",
