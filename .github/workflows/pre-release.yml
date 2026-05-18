@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+      - uses: extractions/setup-just@v2
 
       - name: Check CHANGELOG is release-ready
         run: bash scripts/pre-release-check.sh
@@ -22,4 +23,4 @@ jobs:
         run: uv sync
 
       - name: Test
-        run: uv run make test
+        run: just test
