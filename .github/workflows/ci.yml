@@ -7,6 +7,9 @@ on:
   schedule:
     - cron: "37 3 * * 3"  # Every Wednesday at 03:37 UTC
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
