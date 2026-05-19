@@ -25,13 +25,7 @@ jobs:
         run: just test
 
       - name: Extract release notes
-        run: |
-          awk 'found && /^# /{exit} /^# \[/{found=1; next} found{print}' CHANGELOG.md \
-            > release-notes.md
-          if [ ! -s release-notes.md ]; then
-            echo "Could not extract release notes from CHANGELOG.md"
-            exit 1
-          fi
+        run: bash scripts/extract-release-notes.sh > release-notes.md
 
       - name: Build
         run: uv build

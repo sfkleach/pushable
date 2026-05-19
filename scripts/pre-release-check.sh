@@ -4,7 +4,7 @@ set -euo pipefail
 
 expected_version="${1:-}"
 
-heading=$(grep -m1 '^# \[[0-9]\+\.[0-9]\+\.[0-9]\+\]' CHANGELOG.md)
+heading=$(grep -m1 '^## \[[0-9]\+\.[0-9]\+\.[0-9]\+\]' CHANGELOG.md)
 if [ -z "$heading" ]; then
   echo "No versioned entry found in CHANGELOG.md - top entry must be [X.Y.Z] not Unreleased"
   exit 1
