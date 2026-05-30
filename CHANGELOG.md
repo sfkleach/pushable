@@ -2,6 +2,13 @@
 
 Following the style in https://keepachangelog.com/en/1.0.0/
 
+## [0.2.1] Switch to trusted publishing, 2026-05-30
+
+### Added
+
+- Releases are now managed through trusted publishing from the home repo. This
+  will hopefully cause verification of the side-links.
+
 ## [0.2.0] Switch to uv and updated dependencies, drop Python 3.10/3.11, 2026-05-17
 
 ### Changed
